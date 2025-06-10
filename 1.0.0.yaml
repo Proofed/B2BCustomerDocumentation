@@ -10,8 +10,12 @@ info:
   version: "1.0.0"
 
 servers:
+  - url: https://api.proofed.com
+    description: Production Environment
   - url: https://stageapi.proofed.com
     description: Staging Environment
+  - url: https://testapi.proofed.com
+    description: Test Environment
 
 paths:
   /clientAPIservice/orders:
@@ -140,14 +144,14 @@ paths:
             maxLength: 50
           description: >
             Key value assigned to the Organization required to access the API. Authentication takes place at the Organization level.
-        - in: query
+        - in: header
           name: SearchBy
           required: true
           schema:
             type: string
             enum: [DateRange, ExternalReference, IdempotencyId]
           description: The criteria to search by.
-        - in: query
+        - in: header
           name: SearchValue
           required: true
           schema:
@@ -155,7 +159,7 @@ paths:
           description: >
             The value to search for. For 'DateRange', this is the start date in YYYY-MM-DD format.
             For 'ExternalReference' and 'IdempotencyId', it's the corresponding value.
-        - in: query
+        - in: header
           name: SearchValue2
           required: false
           schema:
@@ -518,7 +522,6 @@ components:
       description: >
         Payload sent via webhook when the API backend completes order actions (creation, completion, or cancellation).
       required:
-        - idempotencyId
         - orderId
         - message
       properties:

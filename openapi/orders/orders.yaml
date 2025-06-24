@@ -1,0 +1,50 @@
+openapi: 3.0.3
+info:
+  title: Proofed OMS Orders Service
+  version: "2.0.0"
+  description: |
+    Submit and manage editing orders.
+paths:
+  /orders:
+    post:
+      summary: Create Order
+      tags:
+        - Orders
+      parameters:
+        - in: header
+          name: api-key
+          schema:
+            type: string
+          required: true
+          description: API key from Directory Service entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "../_components/schemas.yaml#/components/schemas/OrderRequest"
+      responses:
+        "200":
+          description: Order accepted
+          content:
+            application/json:
+              schema:
+                $ref: "../_components/schemas.yaml#/components/schemas/OrderResponse"
+        "401":
+          $ref: "../_components/schemas.yaml#/components/responses/Unauthorized"
+        "404":
+          $ref: "../_components/schemas.yaml#/components/responses/NotFound"
+components:
+  schemas:
+    OrderRequest:
+      type: object
+      properties:
+        externalReference:
+          type: string
+    OrderResponse:
+      type: object
+      properties:
+        orderId:
+          type: integer
+        idempotencyId:
+          type: string

@@ -1,0 +1,46 @@
+openapi: 3.0.3
+info:
+  title: Proofed OMS Directory Service
+  version: "2.0.0"
+  description: |
+    Retrieve service endpoints and API keys for Proofed backend services.
+servers:
+  - url: "https://{DIRECTORY_HOST}"
+    description: Directory Service base URL
+    variables:
+      DIRECTORY_HOST:
+        default: directory.proofed.com
+paths:
+  /services/{version}:
+    get:
+      summary: Fetch directory entries
+      operationId: getDirectoryEntries
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: version
+          required: true
+          schema:
+            type: string
+            example: "0.1"
+          description: API version to retrieve
+      responses:
+        "200":
+          description: List of service entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "../_components/schemas.yaml#/components/schemas/DirectoryEntry"
+        "401":
+          $ref: "../_components/schemas.yaml#/components/responses/Unauthorized"
+        "404":
+          $ref: "../_components/schemas.yaml#/components/responses/NotFound"
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: api-key

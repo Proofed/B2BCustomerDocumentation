@@ -1,0 +1,26 @@
+openapi: 3.0.3
+info:
+  title: Proofed OMS API
+  version: "2.0.0"
+  description: |
+    Top-level OpenAPI entry point that stitches together per-service specs using `$ref`.
+
+    • Each service lives in its own YAML under `openapi/<service>/`.
+    • Shared schemas / parameters live in `openapi/_components/`.
+
+servers:
+  - url: "https://{BASE_URL}"
+    description: Base URL – resolved dynamically via Directory Service.
+    variables:
+      BASE_URL:
+        default: api.proofed.com
+        description: Production base hostname
+
+paths:
+  $ref: "./directory/directory.yaml#/paths"
+
+components:
+  $ref: "./_components/schemas.yaml#/components"
+
+security:
+  - ApiKeyAuth: []

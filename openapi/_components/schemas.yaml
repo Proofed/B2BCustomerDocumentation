@@ -1,0 +1,42 @@
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      description: Standard error payload
+    DirectoryEntry:
+      type: object
+      properties:
+        name:
+          type: string
+        uri:
+          type: string
+        api_key:
+          type: string
+      description: Directory service entry mapping service name to URI & key
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: api-key
+    OrgKeyAuth:
+      type: apiKey
+      in: header
+      name: Organization-Key
+  responses:
+    Unauthorized:
+      description: Unauthorized – invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"

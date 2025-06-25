@@ -468,6 +468,7 @@ components:
 
             
             **Highlighting support**
+            
 
             HTML content may include the `<mark>` element to highlight text.
 

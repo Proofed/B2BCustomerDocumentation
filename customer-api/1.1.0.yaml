@@ -10,12 +10,8 @@ info:
   version: "1.0.0"
 
 servers:
-  - url: https://api.proofed.com
-    description: Production Environment
   - url: https://stageapi.proofed.com
     description: Staging Environment
-  - url: https://testapi.proofed.com
-    description: Test Environment
 
 paths:
   /clientAPIservice/orders:
@@ -144,14 +140,14 @@ paths:
             maxLength: 50
           description: >
             Key value assigned to the Organization required to access the API. Authentication takes place at the Organization level.
-        - in: header
+        - in: query
           name: SearchBy
           required: true
           schema:
             type: string
             enum: [DateRange, ExternalReference, IdempotencyId]
           description: The criteria to search by.
-        - in: header
+        - in: query
           name: SearchValue
           required: true
           schema:
@@ -159,7 +155,7 @@ paths:
           description: >
             The value to search for. For 'DateRange', this is the start date in YYYY-MM-DD format.
             For 'ExternalReference' and 'IdempotencyId', it's the corresponding value.
-        - in: header
+        - in: query
           name: SearchValue2
           required: false
           schema:
@@ -468,6 +464,21 @@ components:
           type: array
           description: >
             **Mandatory for JSON orders.** An array of objects representing sections of the content to be edited.
+
+
+            **Highlighting support**  
+            HTML content may include the `<mark>` element to highlight text.  
+            - Use the attribute `data-color` with one of these six approved HEX values:  
+              - `#A8F0C6`
+              - `#B3E5FF`
+              - `#D6C3FF`
+              - `#D6F5A3`
+              - `#FFB3C6`
+              - `#FFD0C0`
+            - The API ignores any inline `background-color` and will overwrite it to match `data-color`.  
+            - Any other colour or missing `data-color` will return **400 Bad Request** with error code `4000-HL`.
+
+
             Each object must include a `name`, `type` (either "text" or "html"), and the `content` itself.
           items:
             $ref: "#/components/schemas/WorkItem"
@@ -522,6 +533,7 @@ components:
       description: >
         Payload sent via webhook when the API backend completes order actions (creation, completion, or cancellation).
       required:
+        - idempotencyId
         - orderId
         - message
       properties:

@@ -7,7 +7,7 @@ info:
 
     
     The Proofed Customer API enables customers to programmatically submit and manage orders for content editing services. This API supports order submission, order retrieval via search or lookup, and provides webhook notifications when an order status changes.
-  version: "1.0.0"
+  version: "1.1.0"
 
 servers:
   - url: https://stageapi.proofed.com

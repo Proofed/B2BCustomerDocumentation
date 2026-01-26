@@ -440,6 +440,12 @@ components:
           description: >
             Optional. URL to the style guide applicable for the order.
           example: "https://example.com/styleguide"
+        workItemStyleIdentifier:
+          type: string
+          description: >
+            Optional. A unique identifier for the style guide to be used.
+            If not provided (or null), the default style guide associated with the organization group will be used.
+          example: "standard-style-01"
         batchIdentifier:
           type: string
           maxLength: 50

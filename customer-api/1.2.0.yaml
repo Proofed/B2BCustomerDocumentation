@@ -470,7 +470,29 @@ components:
           type: array
           description: >
             **Mandatory for JSON orders.** An array of objects representing sections of the content to be edited.
-            Each object must include a `name`, `type` (either "text" or "html"), and the `content` itself.
+            Each object must include a `name`, `type` (either "text" or "html"), and the `content` itself.s
+            
+            **Highlighting support**
+            
+
+            HTML content may include the `<mark>` element to highlight text.
+
+            - Use the attribute data-color or background-color with one of these six approved HEX values:  
+
+              - #A8F0C6  
+
+              - #B3E5FF  
+
+              - #D6C3FF  
+
+              - #D6F5A3  
+
+              - #FFB3C6  
+
+              - #FFD0C0
+
+            - The Proofed system ignores any inline background-color attribute where data-color is also specified for the same mark tag.
+            
           items:
             $ref: "#/components/schemas/WorkItem"
     WorkItem:

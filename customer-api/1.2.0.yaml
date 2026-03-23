@@ -20,6 +20,8 @@ paths:
       description: >
         Submits a new order to Proofed's order management system (OMS). 
 
+        ![Order submission sequence diagram](https://raw.githubusercontent.com/Proofed/B2BCustomerDocumentation/main/customer-api/assets/sequence.png)
+
         Upon successful submission, the order is processed,
         stored, and assigned a unique `orderId`. Make sure that all mandatory fields are provided and that header authentication
         details (Api-Key, Organization-Key) and IdempotencyId are included.

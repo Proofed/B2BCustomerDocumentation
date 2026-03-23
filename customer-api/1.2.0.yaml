@@ -113,7 +113,7 @@ paths:
       description: >
         Retrieves a list of orders based on the specified search criteria.
         Results include only API-entered orders and are restricted to active customers' projects (project ID) at the time of the search.
-        When searching by date range, results are sorted by creation date in descending order and limited to the 50 most recent orders.
+        When searching by date range, results are sorted by creation date in descending order.
         Only orders with statuses 'Live', 'Complete', or 'Canceled' are returned.
       operationId: searchOrders
       tags:
@@ -194,8 +194,8 @@ paths:
     get:
       summary: Get Order by ID
       description: >
-        Retrieves the details of a specific completed order using its unique order ID.
-        Only orders with a 'Complete' status are returned by this endpoint.
+        Retrieves the details of a specific order using its unique order ID.
+        Orders with the following statuses are returned: Complete, Live, Canceled.
       operationId: getOrderById
       tags:
         - Orders

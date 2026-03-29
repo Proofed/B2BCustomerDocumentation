@@ -20,7 +20,7 @@ paths:
       description: >
         Submits a new order to Proofed's order management system (OMS). 
 
-        ![Order submission sequence diagram](https://raw.githubusercontent.com/Proofed/B2BCustomerDocumentation/main/customer-api/assets/sequence.png)
+        ![Order submission sequence diagram](https://raw.githubusercontent.com/Proofed/B2BCustomerDocumentation/1.2.0/customer-api/assets/sequence.png)
 
         Upon successful submission, the order is processed,
         stored, and assigned a unique `orderId`. Make sure that all mandatory fields are provided and that header authentication
@@ -142,14 +142,14 @@ paths:
             maxLength: 50
           description: >
             Key value assigned to the Organization required to access the API. Authentication takes place at the Organization level.
-        - in: query
+        - in: header
           name: SearchBy
           required: true
           schema:
             type: string
             enum: [DateRange, ExternalReference, IdempotencyId]
           description: The criteria to search by.
-        - in: query
+        - in: header
           name: SearchValue
           required: true
           schema:
@@ -157,7 +157,7 @@ paths:
           description: >
             The value to search for. For 'DateRange', this is the start date in YYYY-MM-DD format.
             For 'ExternalReference' and 'IdempotencyId', it's the corresponding value.
-        - in: query
+        - in: header
           name: SearchValue2
           required: false
           schema:
@@ -592,19 +592,6 @@ components:
 
 
           example: "Order.Created"
-          examples:
-            created:
-              value: "Order.Created"
-              summary: Order successfully created
-            complete:
-              value: "Order.Complete"
-              summary: Order completed (in development)
-            canceled:
-              value: "Order.Canceled"
-              summary: Order canceled (in development)
-            exception:
-              value: "exception: [Error=DatabaseTimeout] [InvocationId=abc123]"
-              summary: Exception due to an issue during order processing
     ErrorResponse:
       type: object
       description: >
@@ -622,13 +609,6 @@ components:
           type: string
           description: A detailed error message explaining the reason for the error.
           example: "list of services not found"
-      examples:
-        invalidServices:
-          value:
-            code: "4000"
-            field: "services"
-            message: "list of services not found"
-          summary: Error response when invalid service combination is provided
     UnauthorizedErrorResponse:
       type: object
       description: >
@@ -708,6 +688,11 @@ components:
             purchaseOrderId:
               type: string
               description: The accounting purchase order identifier provided by your system. This ID will be passed through accounting processes and uniquely identifies each order against the purchase order ID in addition to the external reference.
+            commentToCustomer:
+              type: string
+              description: >
+                An optional comment from Proofed to the customer regarding the order.
+                This field is present only when non-null.
             workItem:
               type: array
               items:

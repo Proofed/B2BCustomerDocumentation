@@ -458,7 +458,7 @@ components:
 
             - `DOCX`, `PDF`, `PPTX`, `XLSX` — a file uploaded as a Base64-encoded string in `workItem`.
 
-            The set of accepted file formats is controlled by Proofed and confirmed during onboarding; a value outside the supported set is rejected.
+            Formats not listed here will be rejected.
           example: "JSON"
         projectId:
           type: integer

@@ -7,7 +7,7 @@ info:
 
     
     The Proofed Customer API enables customers to programmatically submit and manage orders for content editing services. This API supports order submission, order retrieval via search or lookup, and provides webhook notifications when an order status changes.
-  version: "1.2.0"
+  version: "1.3.0"
 
 servers:
   - url: https://api.proofed.com
@@ -69,6 +69,38 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/OrderRequest"
+            examples:
+              jsonBlockOrder:
+                summary: HTML (Block JSON) order
+                value:
+                  externalReference: "order-12345"
+                  services: ["Proofreading"]
+                  deliverySpeed: "Expedited"
+                  platformId: 1
+                  contentType: "Valuation Report"
+                  contentSubject: "Commercial Real Estate"
+                  language: "en-US"
+                  workItemFormat: "JSON"
+                  projectId: 123
+                  workItem:
+                    - name: "Introduction"
+                      type: "html"
+                      content: "<p>Welcome to the introduction.</p>"
+              fileUploadOrder:
+                summary: File upload order (DOCX)
+                value:
+                  externalReference: "order-12346"
+                  services: ["Editing"]
+                  deliverySpeed: "Regular"
+                  platformId: 1
+                  contentType: "Valuation Report"
+                  contentSubject: "Commercial Real Estate"
+                  language: "en-US"
+                  workItemFormat: "DOCX"
+                  workItemIdentity: "Document-1"
+                  projectId: 123
+                  workItem:
+                    - content: "UEsDBBQAAAAIAB1geVyY04HD...(Base64 of the file)...AAAA="
       responses:
         "200":
           description: >
@@ -418,7 +450,15 @@ components:
           type: string
           maxLength: 8
           description: >
-            **Mandatory.** The format of the order. Currently, `JSON` is supported.
+            **Mandatory.** The format of the work item being submitted.
+
+            Supported values are:
+
+            - `JSON` — Proofed Block JSON content supplied inline in `workItem`.
+
+            - `DOCX`, `PDF`, `PPTX`, `XLSX` — a file uploaded as a Base64-encoded string in `workItem`.
+
+            Formats not listed here will be rejected.
           example: "JSON"
         projectId:
           type: integer
@@ -430,7 +470,7 @@ components:
           type: string
           maxLength: 40
           description: >
-            **Conditional.** Required if `workItemFormat` is not "JSON". Used to construct the filename.
+            **Conditional.** Required when `workItemFormat` is not `JSON` (i.e. for file uploads). Used to construct the stored filename, formed as `workItemIdentity` + `.` + `workItemFormat` (e.g. `Document-1.DOCX`).
             Valid characters include alphanumeric characters, hyphen (-), and underscore (_).
           example: "Document-1"
         workItemStyleName:
@@ -473,8 +513,11 @@ components:
         workItem:
           type: array
           description: >
-            **Mandatory for JSON orders.** An array of objects representing sections of the content to be edited.
-            Each object must include a `name`, `type` (either "text" or "html"), and the `content` itself.s
+            **Mandatory.** The content to be edited. How this array is used depends on `workItemFormat`:
+
+            - **`JSON` (Block JSON):** one or more objects, each representing a section of the content, with a `name`, a `type` (either "text" or "html"), and the `content` itself.
+
+            - **File upload (`DOCX`, `PDF`, `PPTX`, `XLSX`):** exactly one object whose `content` is the Base64-encoded raw bytes of the file (with no data-URI prefix). The `name` and `type` fields are not used for file uploads, and supplying more than one object is rejected.
             
             **Highlighting support**
             
@@ -502,16 +545,14 @@ components:
     WorkItem:
       type: object
       description: >
-        Represents a section of the document to be edited.
+        A unit of content to be edited. For `JSON` orders this represents a section (block) of the document; for file uploads (`DOCX`, `PDF`, `PPTX`, `XLSX`) a single WorkItem carries the Base64-encoded file in `content`.
       required:
-        - name
-        - type
         - content
       properties:
         name:
           type: string
           description: >
-            **Mandatory.** The name of the section within the document.
+            **Conditional.** The name of the section within the document. Used for `JSON` block content; not used for file uploads.
           example: "Introduction"
         type:
           type: string
@@ -519,7 +560,7 @@ components:
             - text
             - html
           description: >
-            **Mandatory.** Specifies the format of the content.
+            **Conditional.** For `JSON` block content, specifies the format of the section. Not used for file uploads.
 
             - **text:** Plain text.
 
@@ -528,7 +569,11 @@ components:
         content:
           type: string
           description: >
-            **Mandatory.** The actual text or HTML content for editing.
+            **Mandatory.** The content to be edited.
+
+            - For `JSON` orders: the actual text or HTML content of the section.
+
+            - For file uploads (`DOCX`, `PDF`, `PPTX`, `XLSX`): the Base64-encoded raw bytes of the file, with no data-URI prefix. Content that is not valid Base64, or a file that cannot be read for word counting, is rejected.
           example: "<p>Welcome to the introduction.</p>"
     OrderResponse:
       type: object

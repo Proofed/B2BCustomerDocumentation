@@ -81,6 +81,7 @@ paths:
                   contentSubject: "Commercial Real Estate"
                   language: "en-US"
                   workItemFormat: "JSON"
+                  workItemIdentity: "Document-1"
                   projectId: 123
                   workItemStyleName: "Modern"
                   workItemStyleGuideUrl: "https://example.com/styleguide"

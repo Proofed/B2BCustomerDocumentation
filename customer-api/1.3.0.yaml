@@ -71,7 +71,7 @@ paths:
               $ref: "#/components/schemas/OrderRequest"
             examples:
               jsonBlockOrder:
-                summary: JSON (Block JSON) order
+                summary: HTML (Block JSON) order
                 value:
                   externalReference: "order-12345"
                   services: ["Proofreading"]

@@ -81,7 +81,14 @@ paths:
                   contentSubject: "Commercial Real Estate"
                   language: "en-US"
                   workItemFormat: "JSON"
+                  workItemIdentity: "Document-1"
                   projectId: 123
+                  workItemStyleName: "Modern"
+                  workItemStyleGuideUrl: "https://example.com/styleguide"
+                  workItemStyleIdentifier: "standard-style-01"
+                  batchIdentifier: "batch-001"
+                  purchaseOrderId: "PO-12345"
+                  additionalBriefContent: "Please review the document for accuracy."
                   workItem:
                     - name: "Introduction"
                       type: "html"
@@ -99,6 +106,12 @@ paths:
                   workItemFormat: "DOCX"
                   workItemIdentity: "Document-1"
                   projectId: 123
+                  workItemStyleName: "Modern"
+                  workItemStyleGuideUrl: "https://example.com/styleguide"
+                  workItemStyleIdentifier: "standard-style-01"
+                  batchIdentifier: "batch-001"
+                  purchaseOrderId: "PO-12345"
+                  additionalBriefContent: "Please review the document for accuracy."
                   workItem:
                     - content: "UEsDBBQAAAAIAB1geVyY04HD...(Base64 of the file)...AAAA="
       responses:

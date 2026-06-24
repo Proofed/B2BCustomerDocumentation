@@ -759,19 +759,28 @@ components:
                 $ref: "#/components/schemas/WorkItemResponse"
     WorkItemResponse:
       type: object
+      description: >
+        A unit of returned content. For `JSON` orders each work item is a decoded
+        section (block) of the document; for file-based orders a single work item
+        carries the Base64-encoded file in `content`.
       properties:
         name:
           type: string
-          description: The name of the work item section (present if JSON).
+          description: The name of the work item section. Populated for `JSON` orders only; not present for file-based orders.
         type:
           type: string
-          description: The type of the content (e.g., 'text' or 'html'; present if JSON).
+          description: The type of the section content (e.g. 'text' or 'html'). Populated for `JSON` orders only; not present for file-based orders.
         content:
           type: string
-          description: The content of the work item.
+          description: >
+            The content of the work item. The format depends on how the order was originally submitted:
+
+            - **`JSON` (Block JSON) orders:** the decoded text or HTML content of the section.
+
+            - **File-based orders (`DOCX`, `PDF`, `PPTX`, `XLSX`):** the Base64-encoded raw bytes of the file, with no data-URI prefix.
         comments:
           type: array
-          description: An array of comments associated with this work item.
+          description: An array of comments associated with this work item. Not present for file-based orders.
           items:
             $ref: "#/components/schemas/CommentItem"
           example:
